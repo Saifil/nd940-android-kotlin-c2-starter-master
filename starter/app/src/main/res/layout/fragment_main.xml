@@ -27,6 +27,7 @@
                 android:id="@+id/activity_main_image_of_the_day"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/image_of_the_day"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/placeholder_picture_of_day"/>
@@ -35,10 +36,8 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:padding="@dimen/margin_standard"
+                style="@style/Header"
                 android:layout_gravity="bottom"
                 android:background="#55010613"
                 android:text="@string/image_of_the_day" />

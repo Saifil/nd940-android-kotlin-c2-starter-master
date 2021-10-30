@@ -68,8 +68,14 @@ class MainFragment : Fragment() {
         Glide.with(requireContext())
             .load(image.url)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-            .placeholder(R.drawable.placeholder_picture_of_day)
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.placeholder_picture_of_day)
             .into(activityMainImageOfTheDay)
+
+        activityMainImageOfTheDay.contentDescription = String.format(
+            requireContext().getString(R.string.nasa_picture_of_day_content_description_format),
+            image.title
+        )
     }
 
     private fun displayAsteroids(asteroids: List<Asteroid>? = emptyList()) =

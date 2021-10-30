@@ -3,17 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.Asteroid" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/margin_standard"
         tools:background="@color/app_background">
 
         <TextView
             android:id="@+id/name"
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/default_text_color"
-            android:textSize="18sp"
+            android:text="@{asteroid.codename}"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@id/icon"
             app:layout_constraintHorizontal_bias="0.0"
@@ -23,10 +31,10 @@
 
         <TextView
             android:id="@+id/date"
+            style="@style/Subtitle.Offset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/default_text_color"
-            android:textSize="16sp"
+            android:text="@{asteroid.closeApproachDate}"
             app:layout_constraintEnd_toEndOf="@id/name"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,12 +43,14 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:contentDescription="TODO"
+            android:layout_width="@dimen/status_image_size"
+            android:layout_height="@dimen/status_image_size"
             app:layout_constraintBottom_toBottomOf="@id/date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/name"
+            app:statusIcon="@{asteroid.potentiallyHazardous}"
+            app:statusIconDescription="@{asteroid.potentiallyHazardous}"
+            tools:ignore="ContentDescription"
             tools:src="@drawable/ic_status_normal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,13 +26,7 @@ class AsteroidListAdapter(
             itemClickListener: (item: Asteroid) -> Unit,
             item: Asteroid
         ) = with(binding) {
-            name.text = item.codename
-            date.text = item.closeApproachDate
-            if (item.isPotentiallyHazardous) {
-                icon.setImageResource(R.drawable.ic_status_potentially_hazardous)
-            } else {
-                icon.setImageResource(R.drawable.ic_status_normal)
-            }
+            asteroid = item
             root.setOnClickListener { itemClickListener(item) }
         }
 
