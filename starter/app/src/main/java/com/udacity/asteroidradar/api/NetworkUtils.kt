@@ -6,10 +6,10 @@ import com.udacity.asteroidradar.util.getNextSevenDaysFormattedDates
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 
-private fun JSONObject.parseAsteroidsJsonResult() : ArrayList<Asteroid> {
+private fun JSONObject.parseAsteroidsJsonResult() : List<Asteroid> {
     val nearEarthObjectsJson = getJSONObject("near_earth_objects")
 
-    val asteroidList = ArrayList<Asteroid>()
+    val asteroidList = mutableListOf<Asteroid>()
 
     val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
     for (formattedDate in nextSevenDaysFormattedDates) {

@@ -7,8 +7,10 @@ import kotlin.collections.ArrayList
 
 /**
  * Isolate the Util method for better re-usability
+ *
+ * If not calender obj is passed, returns `API_QUERY_DATE_FORMAT` for today's date
  */
-private fun getFormattedDateString(
+fun getFormattedDateString(
     calendar: Calendar = Calendar.getInstance()
 ) : String {
     val currentTime = calendar.time

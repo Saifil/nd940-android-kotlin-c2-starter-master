@@ -3,29 +3,33 @@ package com.udacity.asteroidradar.main
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.NasaImage
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.main.recycler.AsteroidListAdapter
-import com.udacity.asteroidradar.util.hide
-import com.udacity.asteroidradar.util.show
+import com.udacity.asteroidradar.main.recycler.MainViewModelFactory
 import com.udacity.asteroidradar.util.visibleIf
 import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        ViewModelProviders.of(
+            this, MainViewModelFactory(requireContext())).get(MainViewModel::class.java)
     }
     private lateinit var binding: FragmentMainBinding
-    private val adapter = AsteroidListAdapter { navToDetailsPage(it) }
+    private val adapter = AsteroidListAdapter { asteroid ->
+        findNavController().navigate(
+            MainFragmentDirections.actionShowDetail(asteroid)
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -48,52 +52,32 @@ class MainFragment : Fragment() {
         // setHasOptionsMenu(true)
 
         // setup viewModel observers
-        viewModel.errorEvent.observe(viewLifecycleOwner, this::showErrorBar)
-        viewModel.loadingEvent.observe(viewLifecycleOwner, this::showLoading)
         viewModel.asteroids.observe(viewLifecycleOwner) { displayAsteroids(it) }
-        viewModel.imageOTD.observe(viewLifecycleOwner, this::loadImageOfTheDay)
+        viewModel.imageOfTheDay.observe(viewLifecycleOwner) { loadImageOfTheDay(it) }
 
-        // setup image of the day
-        binding.statusLoadingWheelImageOfTheDay.show()
-        viewModel.fetchNasaImageOfTheDay()
+        // show loading views
+        showAsteroidLoading(true)
 
         return binding.root
     }
 
     private fun loadImageOfTheDay(image: NasaImage?) = with(binding) {
-        if (image == null || !image.isSupported) {
-            statusLoadingWheelImageOfTheDay.hide()
+        if (image == null) {
             return@with
         }
-        Picasso.with(requireContext()).load(image.url)
-            .error(R.drawable.placeholder_picture_of_day)
-            .into(activityMainImageOfTheDay, object : com.squareup.picasso.Callback {
-                override fun onSuccess() {
-                    statusLoadingWheelImageOfTheDay.hide()
-                }
-
-                override fun onError() {
-                    statusLoadingWheelImageOfTheDay.hide()
-                }
-            })
+        Glide.with(requireContext())
+            .load(image.url)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .placeholder(R.drawable.placeholder_picture_of_day)
+            .into(activityMainImageOfTheDay)
     }
 
-    private fun displayAsteroids(asteroids: ArrayList<Asteroid>) =
-        lifecycleScope.launch { adapter.submitList(asteroids) }
+    private fun displayAsteroids(asteroids: List<Asteroid>? = emptyList()) =
+        lifecycleScope.launch {
+            showAsteroidLoading(false)
+            adapter.submitList(asteroids)
+        }
 
-    private fun showLoading(shouldLoading: Boolean) =
+    private fun showAsteroidLoading(shouldLoading: Boolean) =
         binding.statusLoadingWheel.visibleIf(shouldLoading)
-
-    private fun showErrorBar(errorMessage: String?) =
-        Snackbar.make(
-            binding.root,
-            errorMessage ?: requireContext().getString(R.string.loading_error),
-            Snackbar.LENGTH_LONG
-        ).show()
-
-    private fun navToDetailsPage(asteroid: Asteroid) {
-        findNavController().navigate(
-            MainFragmentDirections.actionShowDetail(asteroid)
-        )
-    }
 }
