@@ -45,7 +45,5 @@ fun DatabaseNasaImage.asDomainModel() = NasaImage(
     url = url,
     title = title,
     // we only store image media type in the database
-    mediaType = "image",
-    // image types are supported
-    isSupported = true
+    mediaType = "image"
 )

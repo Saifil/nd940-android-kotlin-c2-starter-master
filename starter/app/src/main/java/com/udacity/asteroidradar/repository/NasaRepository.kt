@@ -6,7 +6,6 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.NasaImage
 import com.udacity.asteroidradar.api.getAsteroidsFromStringResult
-import com.udacity.asteroidradar.api.getNasaImageFromStringResult
 import com.udacity.asteroidradar.asDatabaseModel
 import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.database.asDomainModel
@@ -44,9 +43,9 @@ class NasaRepository(private val database: NasaDatabase) {
 
     suspend fun refreshImageOfTheDay() = withContext(Dispatchers.IO) {
         try {
-            val response = AsteroidApi.retrofitService.getImageOfTheDay()
-            val nasaImage = getNasaImageFromStringResult(response)
+            val nasaImage = AsteroidApi.moshiRetrofitService.getImageOfTheDay()
 
+            // do not store the image in database if it is not of type "image"
             if (nasaImage.isSupported) {
                 database.nasaImageDao.insert(nasaImage.asDatabaseModel())
             }

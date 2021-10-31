@@ -43,19 +43,20 @@ private fun JSONObject.parseAsteroidsJsonResult() : List<Asteroid> {
     return asteroidList
 }
 
-private fun JSONObject.parseNasaImageJsonResult() : NasaImage {
-    val url = getString("url")
-    val type = getString("media_type")
-    val title = getString("title")
-
-    return NasaImage(
-        url = url,
-        mediaType = type,
-        title = title,
-        isSupported = type == "image"
-    )
-}
+// Comment out the manual parsing as we let Moshi handle it for us
+//private fun JSONObject.parseNasaImageJsonResult() : NasaImage {
+//    val url = getString("url")
+//    val type = getString("media_type")
+//    val title = getString("title")
+//
+//    return NasaImage(
+//        url = url,
+//        mediaType = type,
+//        title = title,
+//        isSupported = type == "image"
+//    )
+//}
 
 fun getAsteroidsFromStringResult(result: String) = JSONObject(result).parseAsteroidsJsonResult()
 
-fun getNasaImageFromStringResult(result: String) = JSONObject(result).parseNasaImageJsonResult()
+//fun getNasaImageFromStringResult(result: String) = JSONObject(result).parseNasaImageJsonResult()
