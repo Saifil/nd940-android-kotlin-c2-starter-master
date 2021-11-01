@@ -67,6 +67,7 @@ class MainFragment : Fragment() {
         }
         Glide.with(requireContext())
             .load(image.url)
+            // use automatic aching strategy for offline image loading
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .placeholder(R.drawable.loading_animation)
             .error(R.drawable.placeholder_picture_of_day)

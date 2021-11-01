@@ -7,8 +7,16 @@ import com.udacity.asteroidradar.util.getFormattedDateString
 
 @Dao
 interface AsteroidDao {
-    @Query("SELECT * FROM databaseasteroid")
-    fun getAsteroids() : LiveData<List<DatabaseAsteroid>>
+    // only return asteroids with approach dates >= today
+    @Query("""
+        SELECT * 
+        FROM databaseasteroid
+        WHERE closeApproachDate >= date(:date) 
+        ORDER BY date(closeApproachDate)
+        """)
+    fun getAsteroids(
+        date: String = getFormattedDateString()
+    ) : LiveData<List<DatabaseAsteroid>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(asteroid: List<DatabaseAsteroid>)
