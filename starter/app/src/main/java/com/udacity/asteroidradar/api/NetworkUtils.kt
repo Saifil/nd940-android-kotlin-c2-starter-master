@@ -1,19 +1,17 @@
 package com.udacity.asteroidradar.api
 
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.NasaImage
-import com.udacity.asteroidradar.util.getNextSevenDaysFormattedDates
+import com.udacity.asteroidradar.util.getNDaysFormattedDates
 import org.json.JSONObject
-import kotlin.collections.ArrayList
 
 private fun JSONObject.parseAsteroidsJsonResult() : List<Asteroid> {
     val nearEarthObjectsJson = getJSONObject("near_earth_objects")
 
     val asteroidList = mutableListOf<Asteroid>()
 
-    val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
+    val nextSevenDaysFormattedDates = getNDaysFormattedDates()
     for (formattedDate in nextSevenDaysFormattedDates) {
-        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(formattedDate)
+        val dateAsteroidJsonArray = nearEarthObjectsJson.optJSONArray(formattedDate) ?: continue
 
         for (i in 0 until dateAsteroidJsonArray.length()) {
             val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)

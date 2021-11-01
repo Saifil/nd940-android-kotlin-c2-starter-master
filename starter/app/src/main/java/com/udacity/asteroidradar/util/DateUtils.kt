@@ -18,7 +18,7 @@ fun getFormattedDateString(
     return dateFormat.format(currentTime)
 }
 
-fun getNextSevenDaysFormattedDates(): ArrayList<String> {
+fun getNDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 
     val calendar = Calendar.getInstance()
