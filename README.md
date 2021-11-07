@@ -10,12 +10,21 @@ The app is consists of two screens: A Main screen with a list of all the detecte
 
 This kind of app is one of the most usual in the real world, what you will learn by doing this are some of the most fundamental skills you need to know to work as a professional Android developer, as fetching data from the internet, saving data to a database, and display the data in a clear, clear, compelling UI.
 
+
+## Caching
+
+We use Repository-Network-Database model here. 
+
+We cache the next 7 days asteroid data in the database using a Worker. When the user opens the app, we just try to fetch the today's asteroid data. We also keep the URL of Image of the Day in a Room database. This helps us operate the app fully-offline once the data is cached. 
+
+We make use of Glide to implement an image caching on disk. 
+
 ### Screenshots
 
-![Screenshot 1](starter/screenshots/screen_1.png)
-![Screenshot 2](starter/screenshots/screen_2.png)
-![Screenshot 3](starter/screenshots/screen_3.png)
-![Screenshot 4](starter/screenshots/screen_4.png)
+|Homepage|Details Page (Hazard)|Detail Page (Non-hazad)|
+|---|---|---|
+|![Screenshot_20211107-110823](https://user-images.githubusercontent.com/24502374/140658776-2387a11b-0c28-4fda-a2f2-57167c19ed19.png)|![Screenshot_20211107-110829](https://user-images.githubusercontent.com/24502374/140658778-edaf3fcb-ae76-4b00-9017-f7a63679fc52.png)|![Screenshot_20211107-110836](https://user-images.githubusercontent.com/24502374/140658777-47f5b8ac-8973-40ff-b7ac-1aa01971bef0.png)|
+
 
 ### Dependencies
 
@@ -66,7 +75,7 @@ To get the project running on your local machine, you need to follow these steps
 
 Use this to clone it to your local machine:
 ```bash
-git clone https://github.com/udacity/REPOSITORY_NAME.git
+git clone https://github.com/Saifil/nd940-android-kotlin-c2-starter-master.git
 ```
 
 **Step 2: Check out the ‘master’ branch**
@@ -87,11 +96,24 @@ Explain the steps needed to run any automated tests
 
 ### Break Down Tests
 
-Explain what each test does and why
+Open the test file, connect to a device to emulate the tests. Run individual tests from the file(s) mentioned below
+There are 2 testing files for this poject
+1. `ExampleUnitTest`
 
+Test converting Database model to Network model
 ```
-Examples here
+dbAsteroid_toDomain
 ```
+
+2. `ExampleInstrumentedTest`
+Test CRUD operations on the Asteroid Room database
+```
+getAsteroidCount
+insertAsteroid
+getNasaImageCount
+insertNasaImage
+```
+
 ## Project Instructions
 
 You will be provided with a starter code, which includes the necessary dependencies and plugins that you have been using along the courses and that you are going to need to complete this project. 
@@ -127,7 +149,3 @@ To build this project you are going to use the NASA NeoWS (Near Earth Object Web
 https://api.nasa.gov/
 
 You will need an API Key which is provided for you in that same link, just fill the fields in the form and click Signup.
-
-## License
-
-
